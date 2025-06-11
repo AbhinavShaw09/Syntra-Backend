@@ -1,0 +1,41 @@
+# Django specific files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+db.sqlite3
+*.sqlite3
+media/
+*.log
+*.pot
+*.py[co]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.mo
+*.env
+.env
+myenv/
+
+# React specific files (inside seller-view/frontend)
+seller-view/frontend/node_modules/
+seller-view/frontend/npm-debug.log*
+seller-view/frontend/yarn-debug.log*
+seller-view/frontend/yarn-error.log*
+seller-view/frontend/*.cache
+seller-view/frontend/*.env.local
+seller-view/frontend/*.env.development.local
+seller-view/frontend/*.env.test.local
+seller-view/frontend/*.env.production.local
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
