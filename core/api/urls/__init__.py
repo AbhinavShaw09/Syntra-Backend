@@ -1,7 +1,8 @@
 # api/urls.py
 from django.urls import path
-from ..views import HelloWorldView
+from .accounts import urlpatterns as accounts_urls
 
 urlpatterns = [
-    path('hello/', HelloWorldView.as_view(), name='hello-world'),
+    
 ]
+urlpatterns += accounts_urls
