@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from api.models import Product
-from api.service import ProductService, CartService
+from api.services import ProductService, CartService
 
 
 class ProductSerializer(serializers.Serializer):

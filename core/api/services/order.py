@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
 from api.models.orders import Order, OrderItem
-from api.service.store import CartService
+from api.services.store import CartService
 
 
 class OrderService:

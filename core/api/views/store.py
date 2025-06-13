@@ -6,7 +6,7 @@ from api.serializers import (
     CartItemSerializer,
     CartItemUpdateSerializer,
 )
-from api.service import ProductService, CartService
+from api.services import ProductService, CartService
 
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):

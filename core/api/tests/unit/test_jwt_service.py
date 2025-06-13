@@ -1,7 +1,7 @@
 from ..base import BaseAPITestCase
 from django.contrib.auth.models import User
 
-from api.service import JwtService
+from api.services import JwtService
 from api.models import Seller, Buyer
 
 class JwtServiceTests(BaseAPITestCase):

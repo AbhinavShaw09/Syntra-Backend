@@ -1,9 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from django.contrib.auth.models import User
 
-from api.service import JwtService
+from api.services import JwtService
 from api.serializers import RegisterSerializer, LoginSerializer
 
 
