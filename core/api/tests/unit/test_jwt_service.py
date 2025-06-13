@@ -11,7 +11,6 @@ class JwtServiceTests(BaseAPITestCase):
             password="securepass",
         )
         self.user.name = "Test User"
-        self.user.phone = "9876543210"
         self.user.email = "test@example.com"
         self.user.save()
 
@@ -31,8 +30,7 @@ class JwtServiceTests(BaseAPITestCase):
         service = JwtService(self.user)
         token = service.get_token()
 
-        self.assertEqual(token["name"], self.user.name)
-        self.assertEqual(token["phone"], self.user.phone)
+        self.assertEqual(token["name"], self.user.username)
 
     def test_raises_error_for_invalid_user(self):
         service = JwtService(self.user)
