@@ -1,14 +1,20 @@
 from typing import List
 
 from django.db import transaction
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
 from api.models.orders import Order, OrderItem
 from api.services.store import CartService
+from api.services.payments.core import CorePaymentProviderService
 
 
 class OrderService:
+    ORDER_PAYMENT_SERVICE_PROVIDER = (
+        settings.ORDER_PAYMENNT_SERVICE_PROVIDER or "razorpay"
+    )
+
     @staticmethod
     def get_user_orders(user) -> List[Order]:
         return Order.objects.filter(user=user).prefetch_related("items__product")
@@ -49,7 +55,23 @@ class OrderService:
 
         cart_items.delete()
 
+        OrderService.create_payment_request_for_order(order)
+
         return order
+
+    @staticmethod
+    def create_payment_request_for_order(order: Order):
+        CorePaymentProviderService(
+            payment_provider=OrderService.ORDER_PAYMENT_SERVICE_PROVIDER
+        ).create_payment_request(
+            total_amount=order.total_amount,
+            order_id=order.id,
+            currency="INR",
+            additional_data={
+                "order_id": order.id,
+                "user_id": order.user.id,
+            },
+        )
 
     @staticmethod
     def update_order_status(user, order_id: str, status: str) -> Order:
