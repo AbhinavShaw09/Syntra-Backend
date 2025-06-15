@@ -5,15 +5,12 @@ from django.conf import settings
 from api.models import Product, OrderPaymentRequest, Order, PaymentWebhookEvent
 from .payments_services.razorpay import RazorpayPaymentService
 
-from api.services.order import OrderService
-
-
 @dataclass
 class PaymentRequestData:
     product_id: int
     amount: float
     currency: str = "INR"
-    status: str = OrderPaymentRequest.Status.PENDING
+    status: str = OrderPaymentRequest.PaymentStatus.PENDING
     additional_data: dict = None
     url: str = None
 
@@ -39,7 +36,9 @@ class CorePaymentProviderService:
             raise ValueError(
                 "Product ID or Order ID is required to create a payment request."
             )
-
+            
+        from ..order import OrderService
+        
         order: Order = OrderService.get_order_by_id(order_id)
 
         if not order:

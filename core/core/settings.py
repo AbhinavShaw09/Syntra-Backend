@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import sys
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -173,3 +174,9 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ALLOW_CREDENTIALS = True
 
+
+
+ORDER_PAYMENNT_SERVICE_PROVIDER = os.getenv(
+    "ORDER_PAYMENNT_SERVICE_PROVIDER",
+    "razorpay"
+)
