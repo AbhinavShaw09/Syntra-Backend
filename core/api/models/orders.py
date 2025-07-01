@@ -5,6 +5,29 @@ from .account import User
 from .store import Product
 
 
+class BuyerAddress(BaseModel):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="buyer_address"
+    )
+    first_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    phone_number = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+    )
+    address_line1 = models.CharField(max_length=255)
+    address_line2 = models.CharField(max_length=255)
+    city = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
+    is_default = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "Buyer Addresse"
+        verbose_name_plural = "Buyer Addresses"
+
+
 class Order(BaseModel):
     class StatusChoices(models.IntegerChoices):
         PENDING = (0,)
@@ -19,6 +42,7 @@ class Order(BaseModel):
         choices=StatusChoices.choices,
         default=StatusChoices.PENDING.value,
     )
+    buyer_address = models.ForeignKey(BuyerAddress, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Order {str(self.id)[:8]} - {self.user.username}"
@@ -31,6 +55,7 @@ class OrderItem(BaseModel):
     )
     quantity = models.PositiveIntegerField()
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    buyer_address = models.ForeignKey(BuyerAddress, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.order} - {self.product.name} x{self.quantity}"

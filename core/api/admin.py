@@ -3,6 +3,7 @@ from .models import (
     Seller,
     Buyer,
     Order,
+    BuyerAddress,
     OrderItem,
     Product,
     ProductAttribute,
@@ -15,6 +16,7 @@ from .models import (
 admin.site.register(Seller)
 admin.site.register(Buyer)
 admin.site.register(Order)
+admin.site.register(BuyerAddress)
 admin.site.register(OrderItem)
 admin.site.register(Product)
 admin.site.register(ProductAttribute)

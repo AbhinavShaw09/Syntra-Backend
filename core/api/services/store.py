@@ -1,15 +1,16 @@
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from django.db.models.query import QuerySet
 from rest_framework import serializers
+from typing import List
 
 from decimal import Decimal
 from api.models.store import Product, CartItem
-from typing import List, Dict, Any
 
 
 class ProductService:
     @staticmethod
-    def get_all_products() -> List[Product]:
+    def get_all_products() -> QuerySet[Product]:
         return Product.objects.all()
 
     @staticmethod
