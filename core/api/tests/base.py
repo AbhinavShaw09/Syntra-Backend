@@ -7,7 +7,9 @@ class BaseAPITestCase(APITestCase):
     def setUp(self):
         self.username = "testuser"
         self.password = "securepass123"
-        self.user = User.objects.create_user(username=self.username, password=self.password)
+        self.user = User.objects.create_user(
+            username=self.username, password=self.password
+        )
         self.client = APIClient()
         self.auth_client = self.get_auth_client(self.user)
 

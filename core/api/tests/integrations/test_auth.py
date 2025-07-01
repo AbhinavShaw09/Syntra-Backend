@@ -35,7 +35,7 @@ class AuthIntegrationTests(BaseAPITestCase):
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertIn("access_token", resp.data)
-              
+
     def test_login_invalid_credentials(self):
         data = {"username": self.username, "password": "wrongpassword"}
         resp = self.client.post(

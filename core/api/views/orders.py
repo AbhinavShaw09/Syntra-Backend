@@ -2,7 +2,11 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from api.models import Order
-from api.serializers import OrderSerializer, OrderCreateSerializer, OrderStatusUpdateSerializer
+from api.serializers import (
+    OrderSerializer,
+    OrderCreateSerializer,
+    OrderStatusUpdateSerializer,
+)
 from api.services import OrderService
 
 
@@ -13,9 +17,9 @@ class OrderViewSet(viewsets.ModelViewSet):
         return OrderService.get_user_orders(self.request.user)
 
     def get_serializer_class(self):
-        if self.action == 'create':
+        if self.action == "create":
             return OrderCreateSerializer
-        elif self.action == 'update' or self.action == 'partial_update':
+        elif self.action == "update" or self.action == "partial_update":
             return OrderStatusUpdateSerializer
         return OrderSerializer
 
@@ -25,7 +29,9 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request):
-        serializer = OrderCreateSerializer(data=request.data, context={'request': request})
+        serializer = OrderCreateSerializer(
+            data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             order = serializer.save()
             response_serializer = OrderSerializer(order)
@@ -39,7 +45,9 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk=None):
         order = OrderService.get_order_by_id(request.user, pk)
-        serializer = OrderStatusUpdateSerializer(order, data=request.data, context={'request': request})
+        serializer = OrderStatusUpdateSerializer(
+            order, data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             updated_order = serializer.save()
             response_serializer = OrderSerializer(updated_order)

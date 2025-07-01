@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from api.services import JwtService
 from api.models import Seller, Buyer
 
+
 class JwtServiceTests(BaseAPITestCase):
     def setUp(self):
         self.user = User.objects.create_user(

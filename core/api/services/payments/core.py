@@ -5,6 +5,7 @@ from django.conf import settings
 from api.models import Product, OrderPaymentRequest, Order, PaymentWebhookEvent
 from .payments_services.razorpay import RazorpayPaymentService
 
+
 @dataclass
 class PaymentRequestData:
     product_id: int
@@ -36,9 +37,9 @@ class CorePaymentProviderService:
             raise ValueError(
                 "Product ID or Order ID is required to create a payment request."
             )
-            
+
         from ..order import OrderService
-        
+
         order: Order = OrderService.get_order_by_id(order_id)
 
         if not order:
@@ -59,7 +60,6 @@ class CorePaymentProviderService:
     def _initiate_payment_request(
         self, total_amount: int, order: Order, **kwargs
     ) -> OrderPaymentRequest:
-
         with transaction.atomic():
             payment_request_data = self.payment_provider_service.initiate_payment(
                 amount=total_amount,

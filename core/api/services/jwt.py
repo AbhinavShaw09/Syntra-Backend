@@ -14,7 +14,7 @@ class JwtService:
 
         user = self.user
         seller = Seller.objects.get_or_create(
-            user=user, name=user.username,  email=user.email
+            user=user, name=user.username, email=user.email
         )[0]
         buyer = Buyer.objects.get_or_create(
             user=user, name=user.username, email=user.email

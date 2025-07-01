@@ -7,11 +7,11 @@ from .store import Product
 
 class Order(BaseModel):
     class StatusChoices(models.IntegerChoices):
-        PENDING = 0, 
-        PROCESSING = 1, 
-        SHIPPED = 2, 
-        DELIVERED = 3, 
-        CANCELLED = 4, 
+        PENDING = (0,)
+        PROCESSING = (1,)
+        SHIPPED = (2,)
+        DELIVERED = (3,)
+        CANCELLED = (4,)
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)

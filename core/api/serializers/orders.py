@@ -23,6 +23,11 @@ class ProductSerializer(serializers.Serializer):
         instance.save()
         return instance
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation["in_stock"] = instance.is_in_stock
+        return representation
+
 
 class CartItemSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)

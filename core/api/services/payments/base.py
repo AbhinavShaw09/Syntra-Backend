@@ -12,7 +12,7 @@ class BasePaymentService(ABC):
     @abstractmethod
     def handle_webhook(self, data: Dict[str, Any]) -> Dict[str, Any]:
         pass
-    
+
     @abstractmethod
     def get_payment_status_by_polling(self, transaction_id: str) -> Dict[str, Any]:
         pass

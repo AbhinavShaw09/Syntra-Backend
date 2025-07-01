@@ -1,6 +1,15 @@
 import uuid
 from django.db import models
-from django.utils import timezone
+
+
+class ActiveManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_active=True)
+
+
+class AdminManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()
 
 
 class BaseModel(models.Model):
@@ -9,6 +18,9 @@ class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
+
+    objects = ActiveManager()
+    admin_manager = AdminManager()
 
     class Meta:
         abstract = True
