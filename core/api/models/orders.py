@@ -1,13 +1,13 @@
 from django.db import models
 
 from .base import BaseModel
-from .account import User
+from .account import User, Buyer
 from .store import Product
 
 
 class BuyerAddress(BaseModel):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="buyer_address"
+        User, on_delete=models.CASCADE, related_name="user_address"
     )
     first_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100)
@@ -55,7 +55,6 @@ class OrderItem(BaseModel):
     )
     quantity = models.PositiveIntegerField()
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
-    buyer_address = models.ForeignKey(BuyerAddress, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.order} - {self.product.name} x{self.quantity}"

@@ -1,0 +1,73 @@
+from api.tests.base import BaseAPITestCase
+from api.services import OrderService, CartService
+from api.models import Order
+
+class OrderServiceTests(BaseAPITestCase):
+    def setUp(self):
+        super().setUp()
+        self.product1 = self.make_model("Product", inventory_count=10)
+        self.product2 = self.make_model("Product", inventory_count=10)
+        self.buyer_address = self.make_model("BuyerAddress", user=self.user)
+
+    def test_get_user_orders(self):
+        user_orders = OrderService.get_user_orders(user=self.user)
+        self.assertEqual(user_orders.count(), 0)
+
+        # add product1 to the cart
+        CartService.add_to_cart(user=self.user, product_id=self.product1.id, quantity=5)
+        user_cart = CartService.get_user_cart(user=self.user)
+        self.assertEqual(user_cart.count(), 1)
+        self.assertEqual(user_cart[0].quantity, 5)
+
+        # create order for the user cart
+        order = OrderService.create_order_from_cart(user=self.user)
+        user_orders = OrderService.get_user_orders(user=self.user)
+        self.assertEqual(user_orders.count(), 1)
+
+    def test_get_user_order_by_id(self):
+        user_orders = OrderService.get_user_orders(user=self.user)
+        self.assertEqual(user_orders.count(), 0)
+
+        # add product1 to the cart
+        CartService.add_to_cart(user=self.user, product_id=self.product1.id, quantity=5)
+        user_cart = CartService.get_user_cart(user=self.user)
+        self.assertEqual(user_cart.count(), 1)
+        self.assertEqual(user_cart[0].quantity, 5)
+
+        # create order for the user cart
+        order = OrderService.create_order_from_cart(user=self.user)
+        user_orders = OrderService.get_user_orders(user=self.user)
+        self.assertEqual(user_orders.count(), 1)
+
+        order_by_id = OrderService.get_order_by_id(user=self.user, order_id=order.id)
+        self.assertEqual(order_by_id, order)
+
+    def test_create_order_from_cart(self):
+        # add product1 to the cart
+        CartService.add_to_cart(user=self.user, product_id=self.product1.id, quantity=5)
+        user_cart = CartService.get_user_cart(user=self.user)
+        self.assertEqual(user_cart.count(), 1)
+        self.assertEqual(user_cart[0].quantity, 5)
+
+        # create order for the user cart
+        order = OrderService.create_order_from_cart(user=self.user)
+        user_orders = OrderService.get_user_orders(user=self.user)
+        self.assertEqual(user_orders.count(), 1)
+
+    def test_update_order_status(self):
+        # add product1 to the cart
+        CartService.add_to_cart(user=self.user, product_id=self.product1.id, quantity=5)
+        user_cart = CartService.get_user_cart(user=self.user)
+        self.assertEqual(user_cart.count(), 1)
+        self.assertEqual(user_cart[0].quantity, 5)
+
+        # create order for the user cart
+        order = OrderService.create_order_from_cart(user=self.user)
+        user_orders = OrderService.get_user_orders(user=self.user)
+        self.assertEqual(user_orders.count(), 1)
+
+        new_order_status = Order.StatusChoices.PROCESSING
+        order = OrderService.update_order_status(user=self.user, order_id=order.id, status=new_order_status)
+        self.assertEqual(order.status, new_order_status)
+
+    

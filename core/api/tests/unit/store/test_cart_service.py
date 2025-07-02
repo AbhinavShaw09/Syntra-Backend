@@ -1,4 +1,4 @@
-from ...base import BaseAPITestCase
+from api.tests.base import BaseAPITestCase
 from api.services import CartService
 
 

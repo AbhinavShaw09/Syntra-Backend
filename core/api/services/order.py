@@ -1,11 +1,11 @@
 from typing import List
 
-from django.db import transaction
 from django.conf import settings
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
-from api.models.orders import Order, OrderItem
+from api.models import Order, OrderItem, Buyer, BuyerAddress
 from api.services.store import CartService
 from api.services.payments.core import CorePaymentProviderService
 
@@ -38,9 +38,21 @@ class OrderService:
                     f"Available: {cart_item.product.inventory_count}, Requested: {cart_item.quantity}"
                 )
 
+        buyer = Buyer.objects.filter(user_id=user.id).first()
+        if not buyer:
+            raise serializers.ValidationError("Buyer does not exists")
+
+        buyer_address = BuyerAddress.objects.filter(
+            user_id=user.id, is_active=True
+        ).first()
+        if not buyer_address:
+            raise serializers.ValidationError("Buyer Address does not exists")
+
         total_amount = sum(item.total_price for item in cart_items)
 
-        order = Order.objects.create(user=user, total_amount=total_amount)
+        order = Order.objects.create(
+            user=user, total_amount=total_amount, buyer_address=buyer_address
+        )
 
         for cart_item in cart_items:
             OrderItem.objects.create(
@@ -55,7 +67,9 @@ class OrderService:
 
         cart_items.delete()
 
-        OrderService.create_payment_request_for_order(order)
+        if not settings.IN_TESTING:
+            # Skipping payment link generation for now
+            OrderService.create_payment_request_for_order(order)
 
         return order
 

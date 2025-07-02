@@ -1,9 +1,10 @@
-from django.urls import reverse
-from rest_framework.test import APITestCase
 from rest_framework import status
-from django.contrib.auth.models import User
-
 from api.tests.base import BaseAPITestCase
+from api.utils.test_utils import (
+    generate_random_username,
+    generate_random_email,
+    generate_random_password,
+)
 
 
 class AuthIntegrationTests(BaseAPITestCase):
@@ -14,9 +15,9 @@ class AuthIntegrationTests(BaseAPITestCase):
 
     def test_user_registration(self):
         data = {
-            "username": "newuser",
-            "email": "newuser@example.com",
-            "password": "newpassword123",
+            "username": generate_random_username(),
+            "email": generate_random_email(),
+            "password": generate_random_password(),
         }
         resp = self.client.post(
             self.register_url,
@@ -27,10 +28,29 @@ class AuthIntegrationTests(BaseAPITestCase):
         self.assertIn("message", resp.data)
 
     def test_login_success(self):
-        data = {"username": self.username, "password": self.password}
+        # Register first
+        username = generate_random_username()
+        email = generate_random_email()
+        password = generate_random_password()
+
+        registration_data = {
+            "username": username,
+            "email": email,
+            "password": password,
+        }
+        resp = self.client.post(
+            self.register_url,
+            data=registration_data,
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertIn("message", resp.data)
+
+        # login flow
+        login_data = {"username": username, "password": password}
         resp = self.client.post(
             self.login_url,
-            data=data,
+            data=login_data,
             content_type="application/json",
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
