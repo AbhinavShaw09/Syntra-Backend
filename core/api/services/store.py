@@ -28,7 +28,7 @@ class ProductService:
 
 class CartService:
     @staticmethod
-    def get_user_cart(user) -> List[CartItem]:
+    def get_user_cart(user) -> QuerySet[CartItem]:
         return CartItem.objects.filter(user=user).select_related("product")
 
     @staticmethod

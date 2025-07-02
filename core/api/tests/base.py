@@ -1,3 +1,4 @@
+from model_bakery import baker
 from rest_framework.test import APITestCase, APIClient
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -23,3 +24,6 @@ class BaseAPITestCase(APITestCase):
         client = APIClient()
         client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
         return client
+
+    def make_model(self, instance, **kwargs):
+        return baker.make(instance, **kwargs)

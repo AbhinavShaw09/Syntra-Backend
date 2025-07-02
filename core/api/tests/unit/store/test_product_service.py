@@ -1,14 +1,12 @@
-from model_bakery import baker
-from ..base import BaseAPITestCase
-
+from api.tests.base import BaseAPITestCase
 from api.services import ProductService
 
 
 class ProductServiceTests(BaseAPITestCase):
     def setUp(self):
         super().setUp()
-        self.product1 = baker.make("Product")
-        self.product2 = baker.make("Product")
+        self.product1 = self.make_model("Product")
+        self.product2 = self.make_model("Product")
 
     def test_get_all_store_product(self):
         products = list(ProductService.get_all_products())
@@ -24,7 +22,7 @@ class ProductServiceTests(BaseAPITestCase):
             product_id=self.product1.id, quantity=10
         )
         self.assertEqual(is_available, False)
-        
+
         self.product1.inventory_count = 10
         self.product1.save()
 
@@ -32,4 +30,3 @@ class ProductServiceTests(BaseAPITestCase):
             product_id=self.product1.id, quantity=10
         )
         self.assertEqual(is_available, True)
-
