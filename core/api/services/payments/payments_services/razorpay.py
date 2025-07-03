@@ -48,9 +48,10 @@ class RazorpayPaymentService(BasePaymentService):
         payload = {
             "amount": float(amount * 100),
             "currency": currency,
+            "reference_id": kwargs.get("order_uuid"),
             "notes": kwargs.get("notes", {}),
         }
-
+        
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",

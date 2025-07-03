@@ -63,6 +63,7 @@ class CorePaymentProviderService:
         with transaction.atomic():
             payment_request_data = self.payment_provider_service.initiate_payment(
                 amount=total_amount,
+                order_uuid=str(order.uuid),
                 **kwargs,
             )
 

@@ -67,9 +67,7 @@ class OrderService:
 
         cart_items.delete()
 
-        if not settings.IN_TESTING:
-            # Skipping payment link generation for now
-            OrderService.create_payment_request_for_order(order)
+        OrderService.create_payment_request_for_order(order)
 
         return order
 

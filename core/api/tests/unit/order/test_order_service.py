@@ -1,8 +1,10 @@
+import httpretty
+
 from api.tests.base import BaseAPITestCase
 from api.services import OrderService, CartService
 from api.models import Order
 
-
+from api.tests.mocks.payments.razorpay import MockRazorPayRequests
 class OrderServiceTests(BaseAPITestCase):
     def setUp(self):
         super().setUp()
@@ -10,7 +12,9 @@ class OrderServiceTests(BaseAPITestCase):
         self.product2 = self.make_model("Product", inventory_count=10)
         self.buyer_address = self.make_model("BuyerAddress", user=self.user)
 
+    @httpretty.activate
     def test_get_user_orders(self):
+        MockRazorPayRequests().mock_razorpay_requests()
         user_orders = OrderService.get_user_orders(user=self.user)
         self.assertEqual(user_orders.count(), 0)
 
@@ -25,7 +29,9 @@ class OrderServiceTests(BaseAPITestCase):
         user_orders = OrderService.get_user_orders(user=self.user)
         self.assertEqual(user_orders.count(), 1)
 
+    @httpretty.activate
     def test_get_user_order_by_id(self):
+        MockRazorPayRequests().mock_razorpay_requests()
         user_orders = OrderService.get_user_orders(user=self.user)
         self.assertEqual(user_orders.count(), 0)
 
@@ -45,7 +51,9 @@ class OrderServiceTests(BaseAPITestCase):
         )
         self.assertEqual(order_by_id, order)
 
+    @httpretty.activate
     def test_create_order_from_cart(self):
+        MockRazorPayRequests().mock_razorpay_requests()
         # add product1 to the cart
         CartService.add_to_cart(user=self.user, product_id=self.product1.id, quantity=5)
         user_cart = CartService.get_user_cart(user=self.user)
@@ -57,7 +65,9 @@ class OrderServiceTests(BaseAPITestCase):
         user_orders = OrderService.get_user_orders(user=self.user)
         self.assertEqual(user_orders.count(), 1)
 
+    @httpretty.activate
     def test_update_order_status(self):
+        MockRazorPayRequests().mock_razorpay_requests()
         # add product1 to the cart
         CartService.add_to_cart(user=self.user, product_id=self.product1.id, quantity=5)
         user_cart = CartService.get_user_cart(user=self.user)
