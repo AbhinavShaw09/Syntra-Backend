@@ -19,7 +19,7 @@ class RazorpayPaymentService(BasePaymentService):
     def __init__(self):
         self.client_id = settings.RAZORPAY_CLIENT_ID
         self.client_secret = settings.RAZORPAY_CLIENT_SECRET
-        self.base_url = settings.RAZORPAY_BASE_URL or "https://api.razorpay.com/v1"
+        self.base_url = settings.RAZORPAY_BASE_URL
 
     def make_request(
         self, endpoint: str, payload: dict = {}, headers: Optional[dict] = None
@@ -28,34 +28,36 @@ class RazorpayPaymentService(BasePaymentService):
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
+
         response = requests.post(
             f"{self.base_url}/{endpoint}",
             json=payload,
             headers=headers,
             auth=(self.client_id, self.client_secret),
         )
-        resp_data = response.json().data
-        if "error" in resp_data:
-            raise Exception(f"Razorpay API Error: {resp_data['error']['description']}")
 
-        return resp_data
+        resp = response.json()
+        if "error" in resp:
+            raise Exception(f"Razorpay API Error: {resp['error']['description']}")
+
+        return resp
 
     def initiate_payment(
         self, amount, currency="INR", **kwargs
     ) -> RazorpayPaymentRequestData:
-        payload = (
-            {
-                "amount": amount * 100,
-                "currency": currency,
-                "notes": kwargs.get("notes", {}),
-            },
-        )
+        payload = {
+            "amount": float(amount * 100),
+            "currency": currency,
+            "notes": kwargs.get("notes", {}),
+        }
 
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
-        resp_data = self.make_request("payment_links", payload=payload, headers=headers)
+        resp_data = self.make_request(
+            "payments_links/", payload=payload, headers=headers
+        )
 
         return RazorpayPaymentRequestData(
             amount=amount,

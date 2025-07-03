@@ -20,8 +20,8 @@ class OrderService:
         return Order.objects.filter(user=user).prefetch_related("items__product")
 
     @staticmethod
-    def get_order_by_id(user, order_id: str) -> Order:
-        return get_object_or_404(Order, id=order_id, user=user)
+    def get_order_by_id(user_id, order_id: str) -> Order:
+        return get_object_or_404(Order, id=order_id, user_id=user_id)
 
     @staticmethod
     @transaction.atomic
@@ -82,8 +82,8 @@ class OrderService:
             order_id=order.id,
             currency="INR",
             additional_data={
-                "order_id": order.id,
                 "user_id": order.user.id,
+                "order_id": order.id,
             },
         )
 

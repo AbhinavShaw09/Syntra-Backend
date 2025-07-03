@@ -2,6 +2,11 @@ import random
 import string
 
 
+def random_razorpay_short_url():
+    suffix = "".join(random.choices(string.ascii_letters + string.digits, k=8))
+    return f"https://rzp.io/rzp/{suffix}"
+
+
 def generate_random_username(length=8):
     return "user_" + "".join(
         random.choices(string.ascii_lowercase + string.digits, k=length)

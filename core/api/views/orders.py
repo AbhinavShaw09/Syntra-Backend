@@ -39,12 +39,12 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk=None):
-        order = OrderService.get_order_by_id(request.user, pk)
+        order = OrderService.get_order_by_id(user_id=request.user.id, order_id=pk)
         serializer = OrderSerializer(order)
         return Response(serializer.data)
 
     def update(self, request, pk=None):
-        order = OrderService.get_order_by_id(request.user, pk)
+        order = OrderService.get_order_by_id(user_id=request.user.id, order_id=pk)
         serializer = OrderStatusUpdateSerializer(
             order, data=request.data, context={"request": request}
         )

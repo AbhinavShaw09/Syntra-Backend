@@ -2,6 +2,7 @@ from api.tests.base import BaseAPITestCase
 from api.services import OrderService, CartService
 from api.models import Order
 
+
 class OrderServiceTests(BaseAPITestCase):
     def setUp(self):
         super().setUp()
@@ -39,7 +40,9 @@ class OrderServiceTests(BaseAPITestCase):
         user_orders = OrderService.get_user_orders(user=self.user)
         self.assertEqual(user_orders.count(), 1)
 
-        order_by_id = OrderService.get_order_by_id(user=self.user, order_id=order.id)
+        order_by_id = OrderService.get_order_by_id(
+            user_id=self.user.id, order_id=order.id
+        )
         self.assertEqual(order_by_id, order)
 
     def test_create_order_from_cart(self):
@@ -67,7 +70,7 @@ class OrderServiceTests(BaseAPITestCase):
         self.assertEqual(user_orders.count(), 1)
 
         new_order_status = Order.StatusChoices.PROCESSING
-        order = OrderService.update_order_status(user=self.user, order_id=order.id, status=new_order_status)
+        order = OrderService.update_order_status(
+            user=self.user, order_id=order.id, status=new_order_status
+        )
         self.assertEqual(order.status, new_order_status)
-
-    
