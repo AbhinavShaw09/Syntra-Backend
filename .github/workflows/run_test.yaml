@@ -12,12 +12,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    - name: Debug SECRET_KEY presence
-    run: |
-      echo "SECRET_KEY is set to a string of length: ${#SECRET_KEY}"
-    shell: bash
-
-  working-directory: ./core
     env:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       RAZORPAY_CLIENT_ID: ${{ secrets.RAZORPAY_CLIENT_ID }}
