@@ -2,7 +2,7 @@ import time
 from api.utils.test_utils import random_razorpay_short_url
 
 
-def mock_razorpay_payment_link_generation_request():
+def mock_razorpay_payment_link_generation_response():
     return {
         "accept_partial": False,
         "amount": 10000,

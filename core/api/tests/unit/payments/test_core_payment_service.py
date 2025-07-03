@@ -8,9 +8,8 @@ from api.services import CorePaymentProviderService
 from api.services import OrderService, CartService
 
 from api.tests.mocks.payments.razorpay import (
-    mock_razorpay_payment_link_generation_request,
+    mock_razorpay_payment_link_generation_response,
 )
-
 
 class CorePaymentProviderServiceTests(BaseAPITestCase):
     def setUp(self):
@@ -21,10 +20,11 @@ class CorePaymentProviderServiceTests(BaseAPITestCase):
 
     @httpretty.activate
     def test_create_payment_request(self):
+        # mock payment creation response from razorpay
         httpretty.register_uri(
             httpretty.POST,
             "https://api.razorpay.com/v1/payments_links/",
-            body=json.dumps(mock_razorpay_payment_link_generation_request()),
+            body=json.dumps(mock_razorpay_payment_link_generation_response()),
             content_type="application/json",
             status=200,
         )
