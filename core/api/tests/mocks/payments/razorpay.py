@@ -8,7 +8,7 @@ class MockRazorPayRequests:
     def __init__(self):
         super().__init__()
 
-    def mock_razorpay_requests(self):
+    def mock_razorpay_requests(self, order_id=None):
         httpretty.register_uri(
             httpretty.POST,
             "https://api.razorpay.com/v1/payments_links/",
@@ -44,5 +44,3 @@ class MockRazorPayRequests:
             "user_id": "",
             "whatsapp_link": False,
         }
-
-

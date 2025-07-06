@@ -20,7 +20,7 @@ class JwtServiceTests(BaseAPITestCase):
         service = JwtService(self.user)
         token = service.get_token()
 
-        self.assertIn("name", token)
+        self.assertIn("username", token)
         self.assertIn("phone", token)
         self.assertIn("seller_id", token)
         self.assertIn("buyer_id", token)
@@ -32,7 +32,7 @@ class JwtServiceTests(BaseAPITestCase):
         service = JwtService(self.user)
         token = service.get_token()
 
-        self.assertEqual(token["name"], self.user.username)
+        self.assertEqual(token["username"], self.user.username)
 
     def test_raises_error_for_invalid_user(self):
         service = JwtService(self.user)

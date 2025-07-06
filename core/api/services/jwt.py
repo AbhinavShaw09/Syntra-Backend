@@ -21,10 +21,9 @@ class JwtService:
         )[0]
 
         token: RefreshToken = RefreshToken.for_user(self.user)
-        token["name"] = self.user.username
+        token["username"] = self.user.username
         token["email"] = self.user.email
         token["phone"] = seller.phone
         token["seller_id"] = seller.id
         token["buyer_id"] = buyer.id
-
         return token

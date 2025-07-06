@@ -51,7 +51,7 @@ class RazorpayPaymentService(BasePaymentService):
             "reference_id": kwargs.get("order_uuid"),
             "notes": kwargs.get("notes", {}),
         }
-        
+
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
