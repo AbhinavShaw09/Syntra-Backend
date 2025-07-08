@@ -52,4 +52,4 @@ class ProductServiceTests(BaseAPITestCase):
         self.assertEqual(user_cart[0].quantity, item_quantity)
 
         cart_total = CartService.get_cart_total(user=self.user)
-        self.assertEqual(cart_total, self.product1.price * item_quantity)
+        self.assertEqual(cart_total, self.product1.selling_price * item_quantity)

@@ -59,7 +59,7 @@ class OrderService:
                 order=order,
                 product=cart_item.product,
                 quantity=cart_item.quantity,
-                unit_price=cart_item.product.price,
+                unit_price=cart_item.product.selling_price,
             )
 
             cart_item.product.inventory_count -= cart_item.quantity

@@ -42,7 +42,7 @@ class SellerProductViewSet(viewsets.ViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(
-            {"message": "Product created successfully."}, status=status.HTTP_201_CREATED
+            serializer.data,
         )
 
     def update(self, request, pk=None):

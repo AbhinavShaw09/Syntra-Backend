@@ -8,9 +8,11 @@ from .account import User
 class Product(BaseModel):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    original_price = models.DecimalField(max_digits=10, decimal_places=2)
+    selling_price = models.DecimalField(max_digits=10, decimal_places=2)
     inventory_count = models.PositiveIntegerField(default=0)
     image_url = models.URLField(blank=True)
+    image_url_list = models.JSONField(blank=True, default=list)
 
     def __str__(self):
         return self.name
@@ -68,4 +70,4 @@ class CartItem(BaseModel):
 
     @property
     def total_price(self):
-        return self.product.price * self.quantity
+        return self.product.selling_price * self.quantity
