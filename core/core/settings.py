@@ -15,6 +15,7 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import sys
 import os
+
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -176,13 +177,19 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ALLOW_CREDENTIALS = True
 
-
+# All the order payment options which are available currently 
 ORDER_PAYMENNT_SERVICE_PROVIDER = os.getenv(
     "ORDER_PAYMENNT_SERVICE_PROVIDER", "razorpay"
 )
 
 IN_TESTING = "test" in sys.argv
 
-RAZORPAY_CLIENT_ID = os.getenv('RAZORPAY_CLIENT_ID')
-RAZORPAY_CLIENT_SECRET = os.getenv('RAZORPAY_CLIENT_SECRET')
-RAZORPAY_BASE_URL = os.getenv('RAZORPAY_BASE_URL')
+# Admin user credentials
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+
+# Razorpay credentials
+RAZORPAY_CLIENT_ID = os.getenv("RAZORPAY_CLIENT_ID")
+RAZORPAY_CLIENT_SECRET = os.getenv("RAZORPAY_CLIENT_SECRET")
+RAZORPAY_BASE_URL = os.getenv("RAZORPAY_BASE_URL")
