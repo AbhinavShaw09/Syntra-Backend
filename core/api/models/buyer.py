@@ -9,7 +9,7 @@ class BuyerAddress(BaseModel):
         User, on_delete=models.CASCADE, related_name="user_address"
     )
     first_name = models.CharField(max_length=100)
-    middle_name = models.CharField(max_length=100)
+    middle_name = models.CharField(max_length=100, null=True, blank=True)
     last_name = models.CharField(max_length=100)
     phone_number = models.CharField(
         max_length=20,

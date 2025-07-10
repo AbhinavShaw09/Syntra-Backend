@@ -1,8 +1,7 @@
 from django.db import transaction
-from django.shortcuts import get_object_or_404
+from rest_framework.generics import get_object_or_404
 from django.db.models.query import QuerySet
 from rest_framework import serializers
-from typing import List
 
 from decimal import Decimal
 from api.models.store import Product, CartItem
@@ -80,7 +79,7 @@ class CartService:
     @staticmethod
     def remove_from_cart(user, item_id: str) -> None:
         cart_item = CartService.get_cart_item(user, item_id)
-        cart_item.delete()
+        cart_item.soft_delete()
 
     @staticmethod
     def get_cart_total(user) -> Decimal:

@@ -25,6 +25,10 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+    def soft_delete(self):
+        self.is_active = False
+        self.save(update_fields=["is_active", "updated_at"])
+
 
 class BasePaymentModel(BaseModel):
     transaction_id = models.CharField(

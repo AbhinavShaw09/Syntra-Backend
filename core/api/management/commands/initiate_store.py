@@ -10,18 +10,21 @@ from api.models import Product
 
 fake = Faker()
 
+
 class Command(BaseCommand):
     help = "Generate sample products"
 
     def add_arguments(self, parser):
-        parser.add_argument('total', type=int, help='Number of products to create')
+        parser.add_argument("total", type=int, help="Number of products to create")
 
     def handle(self, *args, **kwargs):
-        total = kwargs['total']
+        total = kwargs["total"]
         created = 0
-        
+
         User.objects.create_user(
-            username = settings.ADMIN_USERNAME, email=settings.ADMIN_EMAIL, password=settings.ADMIN_PASSWORD
+            username=settings.ADMIN_USERNAME,
+            email=settings.ADMIN_EMAIL,
+            password=settings.ADMIN_PASSWORD,
         )
 
         for _ in range(total):
@@ -41,4 +44,6 @@ class Command(BaseCommand):
             )
             created += 1
 
-        self.stdout.write(self.style.SUCCESS(f"Successfully created {created} products."))
+        self.stdout.write(
+            self.style.SUCCESS(f"Successfully created {created} products.")
+        )

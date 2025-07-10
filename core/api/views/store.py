@@ -1,7 +1,7 @@
-
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import get_object_or_404
 from api.serializers import (
     ProductSerializer,
     CartItemSerializer,
@@ -46,34 +46,25 @@ class SellerProductViewSet(viewsets.ViewSet):
         )
 
     def update(self, request, pk=None):
-        try:
-            product = Product.objects.get(pk=pk)
-        except Product.DoesNotExist:
-            return Response(
-                {"detail": "Product not found."}, status=status.HTTP_404_NOT_FOUND
-            )
-
+        product = get_object_or_404(Product, pk=pk)
         serializer = self.serializer_class(product, data=request.data, partial=False)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
         serializer.save()
         return Response(serializer.data)
 
     def partial_update(self, request, pk=None):
-        try:
-            product = Product.objects.get(pk=pk)
-        except Product.DoesNotExist:
-            return Response(
-                {"detail": "Product not found."}, status=status.HTTP_404_NOT_FOUND
-            )
-
+        product = get_object_or_404(Product, pk=pk)
         serializer = self.serializer_class(product, data=request.data, partial=True)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
         serializer.save()
         return Response(serializer.data)
+
+    def delete(self, request, pk=None):
+        product = get_object_or_404(Product, pk=pk)
+        product.soft_delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class CartViewSet(viewsets.ModelViewSet):
