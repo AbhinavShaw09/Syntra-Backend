@@ -11,23 +11,23 @@ from api.serializers import BuyerAddressSerializer
 from api.services import BuyerAddressService
 
 
-class BuyerAddressViewsSet(viewsets):
+class BuyerAddressViewsSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = BuyerAddressSerializer
 
-    def get_queryset(self, user: User) -> QuerySet[BuyerAddress]:
+    def get_queryset(self, user_id: int) -> QuerySet[BuyerAddress]:
         return BuyerAddressService.get_all_buyer_address()
 
     def list(self, request):
-        buyer_address_data = self.get_queryset()
-        serializer = self.serializer_class(data=buyer_address_data, many=True)
-        return Response(data=serializer.data)
+        buyer_address_data = self.get_queryset(user_id=request.auth.get("user_id"))
+        serializer = self.serializer_class(instance=buyer_address_data, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
         if not serializer.is_valid():
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        serializer.save()
+        serializer.save(user=request.user)
         return Response(data=serializer.validated_data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk=None):
@@ -37,17 +37,7 @@ class BuyerAddressViewsSet(viewsets):
         )
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        serializer.save()
-        return Response(serializer.data)
-
-    def partial_update(self, request, pk=None):
-        buyer_address = get_object_or_404(BuyerAddress, pk=pk)
-        serializer = self.serializer_class(
-            buyer_address, data=request.data, partial=False
-        )
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        serializer.save()
+        serializer.save(user=request.user)
         return Response(serializer.data)
 
     def delete(self, request, pk=None):

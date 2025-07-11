@@ -1,4 +1,3 @@
-from rest_framework import status
 from api.tests.base import BaseAPITestCase
 from api.utils.test_utils import (
     generate_random_username,
@@ -24,7 +23,7 @@ class AuthIntegrationTests(BaseAPITestCase):
             data=data,
             content_type="application/json",
         )
-        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertSuccessReponse(resp)
         self.assertIn("message", resp.data)
 
     def test_login_success(self):
@@ -43,7 +42,7 @@ class AuthIntegrationTests(BaseAPITestCase):
             data=registration_data,
             content_type="application/json",
         )
-        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertSuccessReponse(resp)
         self.assertIn("message", resp.data)
 
         # login flow
@@ -53,7 +52,7 @@ class AuthIntegrationTests(BaseAPITestCase):
             data=login_data,
             content_type="application/json",
         )
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        self.assertSuccessReponse(resp)
         self.assertIn("access_token", resp.data)
 
     def test_login_invalid_credentials(self):
@@ -63,4 +62,4 @@ class AuthIntegrationTests(BaseAPITestCase):
             data=data,
             content_type="application/json",
         )
-        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertErrorResponse(resp)

@@ -22,3 +22,8 @@ def generate_random_email():
     username = generate_random_username(6)
     domain = random.choice(["example.com", "test.com", "mail.com"])
     return f"{username}@{domain}"
+
+
+def generate_random_phone_number():
+    country_code = 91  # currently supporting only india
+    return f"+{country_code}-{''.join(random.choices(string.digits, k=10))}"

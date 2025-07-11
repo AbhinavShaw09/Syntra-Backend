@@ -1,4 +1,5 @@
 from model_bakery import baker
+from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
@@ -37,3 +38,30 @@ class BaseAPITestCase(APITestCase):
 
     def make_model(self, instance, **kwargs):
         return baker.make(instance, **kwargs)
+
+    def assertSuccessReponse(self, response):
+        allowed_statuses = [
+            status.HTTP_200_OK,
+            status.HTTP_201_CREATED,
+            status.HTTP_202_ACCEPTED,
+            status.HTTP_204_NO_CONTENT,
+        ]
+
+        assert response.status_code in allowed_statuses, (
+            f"Expected success response, got {response.status_code}:\n{response.data}"
+        )
+
+    def assertErrorResponse(self, response):
+        allowed_statuses = [
+            status.HTTP_400_BAD_REQUEST,
+            status.HTTP_401_UNAUTHORIZED,
+            status.HTTP_403_FORBIDDEN,
+            status.HTTP_404_NOT_FOUND,
+        ]
+
+        assert response.status_code in allowed_statuses, (
+            f"Expected error response, got {response.status_code}:\n{response.data}"
+        )
+
+    def assertNoDataInReponse(self, response):
+        self.assertEqual(len(response.data), 0)

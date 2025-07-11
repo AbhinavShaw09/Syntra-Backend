@@ -4,7 +4,6 @@ from api.models import BuyerAddress
 
 
 class BuyerAddressSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
     first_name = serializers.CharField(max_length=100)
     middle_name = serializers.CharField(max_length=100, required=False)
     last_name = serializers.CharField(max_length=100)
