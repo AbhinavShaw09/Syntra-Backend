@@ -1,6 +1,6 @@
 from django.db.models.query import QuerySet
-
 from api.models import BuyerAddress
+
 
 class BuyerAddressService:
     @staticmethod

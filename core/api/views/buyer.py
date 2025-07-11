@@ -10,13 +10,14 @@ from api.serializers import BuyerAddressSerializer
 
 from api.services import BuyerAddressService
 
+
 class BuyerAddressViewsSet(viewsets):
     permission_classes = [IsAuthenticated]
     serializer_class = BuyerAddressSerializer
 
     def get_queryset(self, user: User) -> QuerySet[BuyerAddress]:
         return BuyerAddressService.get_all_buyer_address()
-    
+
     def list(self, request):
         buyer_address_data = self.get_queryset()
         serializer = self.serializer_class(data=buyer_address_data, many=True)
