@@ -21,7 +21,7 @@ class ProductViewSet(viewsets.ViewSet):
     def list(self, request):
         product = self.get_queryset()
         serializer = self.serializer_class(product, many=True)
-        return Response(data=serializer.data)
+        return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
         product = ProductService.get_product_by_id(product_id=pk)
@@ -49,14 +49,6 @@ class SellerProductViewSet(viewsets.ViewSet):
         return Response(
             serializer.data,
         )
-
-    def update(self, request, pk=None):
-        product = get_object_or_404(Product, pk=pk)
-        serializer = self.serializer_class(product, data=request.data, partial=False)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        serializer.save()
-        return Response(serializer.data)
 
     def partial_update(self, request, pk=None):
         product = get_object_or_404(Product, pk=pk)

@@ -27,4 +27,11 @@ urlpatterns = [
         "seller/products/create/",
         SellerProductViewSet.as_view({"post": "create"}, name="seller_create_products"),
     ),
+    path(
+        "seller/products/<int:pk>/",
+        SellerProductViewSet.as_view(
+            {"patch": "partial_update", "delete": "delete"},
+            name="seller_update_or_delete_products",
+        ),
+    ),
 ]

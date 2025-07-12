@@ -1,5 +1,4 @@
 from api.tests.base import BaseAPITestCase
-from api.models import Product
 
 
 class ProductIntegrationTests(BaseAPITestCase):
