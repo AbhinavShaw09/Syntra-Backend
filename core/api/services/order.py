@@ -51,7 +51,10 @@ class OrderService:
         total_amount = sum(item.total_price for item in cart_items)
 
         order = Order.objects.create(
-            user=user, total_amount=total_amount, buyer_address=buyer_address
+            user=user,
+            total_amount=total_amount,
+            buyer_address=buyer_address,
+            status=Order.StatusChoices.PROCESSING.value,
         )
 
         for cart_item in cart_items:

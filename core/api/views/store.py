@@ -11,16 +11,21 @@ from api.services import ProductService, CartService
 from api.models import Product
 
 
-class ProductViewSet(viewsets.ReadOnlyModelViewSet):
+class ProductViewSet(viewsets.ViewSet):
     permission_classes = []
     serializer_class = ProductSerializer
 
     def get_queryset(self):
         return ProductService.get_all_products()
 
+    def list(self, request):
+        product = self.get_queryset()
+        serializer = self.serializer_class(product, many=True)
+        return Response(data=serializer.data)
+
     def retrieve(self, request, pk=None):
-        product = ProductService.get_product_by_id(pk)
-        serializer = self.get_serializer(product)
+        product = ProductService.get_product_by_id(product_id=pk)
+        serializer = self.serializer_class(product)
         return Response(serializer.data)
 
 
