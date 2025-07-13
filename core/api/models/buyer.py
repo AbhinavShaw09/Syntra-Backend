@@ -17,7 +17,7 @@ class BuyerAddress(BaseModel):
         null=True,
     )
     address_line1 = models.CharField(max_length=255)
-    address_line2 = models.CharField(max_length=255)
+    address_line2 = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
     is_default = models.BooleanField(default=False)
