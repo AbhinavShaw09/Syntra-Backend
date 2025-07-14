@@ -88,15 +88,10 @@ class CartViewSet(viewsets.ModelViewSet):
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def retrieve(self, request, pk=None):
-        cart_item = CartService.get_cart_item(request.user, pk)
-        serializer = CartItemSerializer(cart_item)
-        return Response(serializer.data)
-
-    def update(self, request, pk=None):
+    def partial_update(self, request, pk=None):
         cart_item = CartService.get_cart_item(request.user, pk)
         serializer = CartItemUpdateSerializer(
-            cart_item, data=request.data, context={"request": request}
+            cart_item, data=request.data, partial=True, context={"request": request}
         )
         if serializer.is_valid():
             updated_cart_item = serializer.save()
@@ -104,6 +99,6 @@ class CartViewSet(viewsets.ModelViewSet):
             return Response(response_serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def destroy(self, request, pk=None):
+    def delete(self, request, pk=None):
         CartService.remove_from_cart(request.user, pk)
         return Response(status=status.HTTP_204_NO_CONTENT)

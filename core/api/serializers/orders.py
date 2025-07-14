@@ -32,18 +32,13 @@ class ProductSerializer(serializers.Serializer):
 
 
 class CartItemSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    product = serializers.UUIDField(write_only=True)
+    product = serializers.IntegerField(write_only=True)
     product_id = serializers.UUIDField(source="product.id", read_only=True)
     product_name = serializers.CharField(source="product.name", read_only=True)
-    product_price = serializers.DecimalField(
-        source="product.price", max_digits=10, decimal_places=2, read_only=True
+    product_selling_price = serializers.DecimalField(
+        source="product.selling_price", max_digits=10, decimal_places=2, read_only=True
     )
-    product_image_url = serializers.URLField(source="product.image_url", read_only=True)
     quantity = serializers.IntegerField(min_value=1)
-    total_price = serializers.DecimalField(
-        max_digits=10, decimal_places=2, read_only=True
-    )
 
     def validate_product(self, value):
         try:
@@ -53,7 +48,7 @@ class CartItemSerializer(serializers.Serializer):
         return value
 
     def validate(self, data):
-        product_id = data.get("product")
+        product_id = data.get("product_id")
         quantity = data.get("quantity")
 
         if product_id and not ProductService.check_product_availability(

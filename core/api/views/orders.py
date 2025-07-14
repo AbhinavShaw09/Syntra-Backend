@@ -1,7 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from api.models import Order
 from api.serializers import (
     OrderSerializer,
     OrderCreateSerializer,

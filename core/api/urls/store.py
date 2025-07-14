@@ -1,14 +1,8 @@
-# store/urls.py
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from api.views import ProductViewSet, CartViewSet, SellerProductViewSet
+from django.urls import path
+from api.views import ProductViewSet, SellerProductViewSet, CartViewSet
 
-
-router = DefaultRouter()
-router.register(r"cart", CartViewSet, basename="cart")
 
 urlpatterns = [
-    path("", include(router.urls)),
     path(
         "buyer/products/",
         ProductViewSet.as_view({"get": "list"}),
@@ -30,6 +24,17 @@ urlpatterns = [
     path(
         "seller/products/<int:pk>/",
         SellerProductViewSet.as_view(
+            {"patch": "partial_update", "delete": "delete"},
+            name="seller_update_or_delete_products",
+        ),
+    ),
+    path(
+        "buyer/cart/",
+        CartViewSet.as_view({"get": "list", "post": "create"}),
+    ),
+    path(
+        "buyer/cart/<int:pk>/",
+        CartViewSet.as_view(
             {"patch": "partial_update", "delete": "delete"},
             name="seller_update_or_delete_products",
         ),
