@@ -11,7 +11,7 @@ class BuyerAddressServiceTests(BaseAPITestCase):
         buyer_addresses = BuyerAddressService.get_all_buyer_address(
             user_id=self.user.id
         )
-        self.assertEqual(buyer_addresses.count(), 0)
+        self.assertEqual(buyer_addresses.count(), 1)
 
         buyer_address = self.make_model(BuyerAddress, user_id=self.user.id)
         self.assertIsInstance(buyer_address, BuyerAddress)
@@ -19,4 +19,4 @@ class BuyerAddressServiceTests(BaseAPITestCase):
         buyer_addresses = BuyerAddressService.get_all_buyer_address(
             user_id=self.user.id
         )
-        self.assertEqual(buyer_addresses.count(), 1)
+        self.assertEqual(buyer_addresses.count(), 2)

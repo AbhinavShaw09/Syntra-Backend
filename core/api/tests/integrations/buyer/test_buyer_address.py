@@ -8,7 +8,6 @@ class BuyerAddressIntegrationTests(BaseAPITestCase):
     def setUp(self):
         super().setUp()
         self.client = self.get_auth_client()
-        self.buyer_address = self.make_model(BuyerAddress, user_id=self.user.id)
         self.buyer_address.phone_number = generate_random_phone_number()
         self.buyer_address.save()
 

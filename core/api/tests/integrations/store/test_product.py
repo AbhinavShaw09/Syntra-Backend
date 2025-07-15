@@ -4,13 +4,13 @@ from api.tests.base import BaseAPITestCase
 class ProductIntegrationTests(BaseAPITestCase):
     def setUp(self):
         super().setUp()
-        self.product1 = self.make_model("Product")
         self.product2 = self.make_model("Product")
+        self.product3 = self.make_model("Product")
 
     def test_get_all_products(self):
         response = self.client.get(path="/api/buyer/products/")
         self.assertSuccessReponse(response)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
 
     def test_retrieve_product(self):
         response = self.client.get(path=f"/api/buyer/products/{self.product1.id}/")

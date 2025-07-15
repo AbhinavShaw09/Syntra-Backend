@@ -2,7 +2,6 @@ from typing import List
 
 from django.conf import settings
 from django.db import transaction
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
 from api.models import Order, OrderItem, Buyer, BuyerAddress
@@ -21,7 +20,7 @@ class OrderService:
 
     @staticmethod
     def get_order_by_id(user_id, order_id: str) -> Order:
-        return get_object_or_404(Order, id=order_id, user_id=user_id)
+        return Order.objects.filter(id=order_id, user_id=user_id).first()
 
     @staticmethod
     @transaction.atomic

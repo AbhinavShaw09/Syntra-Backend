@@ -5,8 +5,8 @@ class SellerProductIntegrationTests(BaseAPITestCase):
     def setUp(self):
         super().setUp()
         self.client = self.get_auth_client()
-        self.product1 = self.make_model("Product")
         self.product2 = self.make_model("Product")
+        self.product3 = self.make_model("Product")
 
     def get_product_payload(self):
         return {
@@ -22,7 +22,7 @@ class SellerProductIntegrationTests(BaseAPITestCase):
             content_type="application/json",
         )
         self.assertSuccessReponse(response)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data), 3)
 
     def test_seller_create_product(self):
         response = self.client.post(

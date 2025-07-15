@@ -8,7 +8,7 @@ from .buyer import urlpatterns as buyer_urls
 urlpatterns = []
 
 urlpatterns += [
-    path("", include(accounts_urls)),
+    path("auth/", include(accounts_urls)),
     path("", include(store_urls)),
     path("", include(order_urls)),
     path("", include(buyer_urls)),

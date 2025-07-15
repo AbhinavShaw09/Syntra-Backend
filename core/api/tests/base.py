@@ -24,6 +24,8 @@ class BaseAPITestCase(APITestCase):
         )[0]
         self.client = APIClient()
         self.auth_client = self.get_auth_client(self.user)
+        self.product1 = self.make_model("Product", inventory_count=10)
+        self.buyer_address = self.make_model("BuyerAddress", user=self.user)
 
     def get_access_token(self, user=None):
         user = user or self.user
@@ -38,6 +40,16 @@ class BaseAPITestCase(APITestCase):
 
     def make_model(self, instance, **kwargs):
         return baker.make(instance, **kwargs)
+
+    def get_buyer_cart_payload(self):
+        return {"product": str(self.product1.id), "quantity": 5}
+
+    def create_buyer_cart(self):
+        return self.client.post(
+            "/api/buyer/cart/",
+            data=self.get_buyer_cart_payload(),
+            content_type="application/json",
+        )
 
     def assertSuccessReponse(self, response):
         allowed_statuses = [

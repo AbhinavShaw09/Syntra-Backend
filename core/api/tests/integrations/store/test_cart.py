@@ -5,17 +5,6 @@ class CartIntegrationsTest(BaseAPITestCase):
     def setUp(self):
         super().setUp()
         self.client = self.get_auth_client()
-        self.product1 = self.make_model("Product", inventory_count=10)
-
-    def get_buyer_cart_payload(self):
-        return {"product": str(self.product1.id), "quantity": 5}
-
-    def create_buyer_cart(self):
-        return self.client.post(
-            "/api/buyer/cart/",
-            data=self.get_buyer_cart_payload(),
-            content_type="application/json",
-        )
 
     def test_seller_cart_list_products(self):
         response = self.client.get(

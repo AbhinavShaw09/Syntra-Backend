@@ -18,7 +18,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == "create":
             return OrderCreateSerializer
-        elif self.action == "update" or self.action == "partial_update":
+        elif self.action == "update":
             return OrderStatusUpdateSerializer
         return OrderSerializer
 
@@ -49,6 +49,11 @@ class OrderViewSet(viewsets.ModelViewSet):
         )
         if serializer.is_valid():
             updated_order = serializer.save()
-            response_serializer = OrderSerializer(updated_order)
+            response_serializer = OrderSerializer(updated_order, partial=True)
             return Response(response_serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve_all_buyer_orders(self, request):
+        orders = OrderService.get_user_orders(request.user)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)

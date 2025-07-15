@@ -10,8 +10,8 @@ from api.tests.mocks.payments.razorpay import MockRazorPayRequests
 class OrderServiceTests(BaseAPITestCase):
     def setUp(self):
         super().setUp()
-        self.product1 = self.make_model("Product", inventory_count=10)
         self.product2 = self.make_model("Product", inventory_count=10)
+        self.product3 = self.make_model("Product", inventory_count=10)
         self.buyer_address = self.make_model("BuyerAddress", user=self.user)
 
     @httpretty.activate
