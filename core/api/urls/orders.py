@@ -9,12 +9,17 @@ urlpatterns = [
     ),
     path(
         "buyer/order/<int:pk>/",
-        OrderViewSet.as_view({"get": "retrieve", "update": "update"}),
+        OrderViewSet.as_view({"get": "retrieve"}),
         name="order-detail",
     ),
     path(
         "seller/order/",
         OrderViewSet.as_view({"get": "list"}),
+        name="buyer-order-list",
+    ),
+    path(
+        "seller/order/<int:pk>/",
+        OrderViewSet.as_view({"post": "update"}),
         name="buyer-order-list",
     ),
 ]
