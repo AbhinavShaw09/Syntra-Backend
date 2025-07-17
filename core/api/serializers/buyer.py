@@ -27,3 +27,17 @@ class BuyerAddressSerializer(serializers.Serializer):
             setattr(instance, attr, value)
         instance.save()
         return instance
+
+
+class BuyerAccountDetailsSerializer(serializers.Serializer):
+    id = serializers.ReadOnlyField()
+    username = serializers.CharField(max_length=100)
+    email = serializers.EmailField()
+    first_name = serializers.CharField(max_length=100, allow_blank=True, required=False)
+    last_name = serializers.CharField(max_length=100, allow_blank=True, required=False)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance

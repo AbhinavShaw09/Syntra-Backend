@@ -1,5 +1,4 @@
 from api.tests.base import BaseAPITestCase
-from api.models import BuyerAddress
 
 from api.utils.test_utils import generate_random_phone_number
 
@@ -65,7 +64,7 @@ class BuyerAddressIntegrationTests(BaseAPITestCase):
         self.assertEqual(response.status_code, 201)
 
         response = self.client.put(
-            f"/api/buyer/address/{self.buyer_address.id}/update/",
+            f"/api/buyer/address/update/",
             data=self.get_buyer_payload(),
             content_type="application/json",
         )
@@ -76,7 +75,7 @@ class BuyerAddressIntegrationTests(BaseAPITestCase):
         self.assertEqual(response.status_code, 201)
 
         response = self.client.delete(
-            f"/api/buyer/address/{self.buyer_address.id}/delete/",
+            f"/api/buyer/address/delete/",
             content_type="application/json",
         )
         self.assertSuccessReponse(response)
