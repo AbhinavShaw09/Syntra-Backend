@@ -44,6 +44,10 @@ jobs:
         key: ${{ runner.os }}-uv-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-uv-
+  
+    - name: Run Django Migrations
+      run: .venv/bin/python manage.py migrate --noinput
+      working-directory: ./core
 
     - name: Install Python dependencies with uv
       run: uv pip install -r requirements.txt
