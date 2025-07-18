@@ -42,7 +42,7 @@ class BaseAPITestCase(APITestCase):
         return baker.make(instance, **kwargs)
 
     def get_buyer_cart_payload(self):
-        return {"product": str(self.product1.id), "quantity": 5}
+        return [{"product_id": str(self.product1.id), "quantity": 5}]
 
     def create_buyer_cart(self):
         return self.client.post(

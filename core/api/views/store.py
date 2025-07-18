@@ -81,10 +81,12 @@ class CartViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request):
-        serializer = CartItemSerializer(data=request.data, context={"request": request})
+        serializer = CartItemSerializer(
+            data=request.data, context={"request": request}, many=True
+        )
         if serializer.is_valid():
             cart_item = serializer.save()
-            response_serializer = CartItemSerializer(cart_item)
+            response_serializer = CartItemSerializer(cart_item, many=True)
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

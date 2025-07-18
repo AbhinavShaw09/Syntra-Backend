@@ -3,9 +3,8 @@ from api.services import ProductService, CartService
 
 
 class CartItemSerializer(serializers.Serializer):
-    product = serializers.IntegerField(write_only=True)
-    product_id = serializers.UUIDField(source="product.id", read_only=True)
-    product_name = serializers.CharField(source="product.name", read_only=True)
+    product_id = serializers.IntegerField()
+    product_name = serializers.CharField(max_length=100, read_only=True)
     product_selling_price = serializers.DecimalField(
         source="product.selling_price", max_digits=10, decimal_places=2, read_only=True
     )
@@ -33,7 +32,7 @@ class CartItemSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user = self.context["request"].user
-        product_id = validated_data["product"]
+        product_id = validated_data["product_id"]
         quantity = validated_data["quantity"]
         return CartService.add_to_cart(user, str(product_id), quantity)
 
