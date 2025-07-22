@@ -3,13 +3,8 @@ from api.views import OrderViewSet
 
 urlpatterns = [
     path(
-        "order/",
-        OrderViewSet.as_view({"get": "list"}),
-        name="buyer-order-list",
-    ),
-    path(
         "order/<int:pk>/",
-        OrderViewSet.as_view({"post": "update"}),
+        OrderViewSet.as_view({"post": "update", "get" : "get_all_seller_orders"}),
         name="buyer-order-list",
     ),
 ]

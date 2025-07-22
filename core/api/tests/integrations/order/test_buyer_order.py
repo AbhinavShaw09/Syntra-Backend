@@ -74,7 +74,7 @@ class BuyerOrderIntegrationTests(BaseAPITestCase):
         self.assertSuccessReponse(response)
 
         response = self.client.get(
-            path="/api/seller/order/", content_type="application/json"
+            path="/api/buyer/order/", content_type="application/json"
         )
         self.assertSuccessReponse(response)
         self.assertEqual(len(response.data), 1)

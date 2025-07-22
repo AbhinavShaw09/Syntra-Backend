@@ -14,7 +14,7 @@ urlpatterns = [
     path(
         "products/<int:pk>/",
         SellerProductViewSet.as_view(
-            {"patch": "partial_update", "delete": "delete"},
+            {"patch": "partial_update", "post": "delete_product"},
             name="seller_update_or_delete_products",
         ),
     ),

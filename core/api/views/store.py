@@ -34,7 +34,7 @@ class SellerProductViewSet(viewsets.ViewSet):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
-        return Product.admin_manager.all()
+        return Product.objects.all()
 
     def list(self, request):
         product_data = self.get_queryset()
@@ -58,10 +58,10 @@ class SellerProductViewSet(viewsets.ViewSet):
         serializer.save()
         return Response(serializer.data)
 
-    def delete(self, request, pk=None):
+    def delete_product(self, request, pk=None):
         product = get_object_or_404(Product, pk=pk)
         product.soft_delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_200_OK)
 
 
 class CartViewSet(viewsets.ModelViewSet):

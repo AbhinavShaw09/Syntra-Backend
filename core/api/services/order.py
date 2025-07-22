@@ -14,6 +14,10 @@ class OrderService:
         settings.ORDER_PAYMENNT_SERVICE_PROVIDER or "razorpay"
     )
 
+    @staticmethod 
+    def get_all_seller_orders() -> List[Order]:
+        return Order.objects.all().prefetch_related("items__product")
+
     @staticmethod
     def get_user_orders(user) -> List[Order]:
         return Order.objects.filter(user=user).prefetch_related("items__product")

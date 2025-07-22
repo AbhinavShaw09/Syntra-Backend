@@ -52,7 +52,7 @@ class CartService:
         )
 
         if not created:
-            new_quantity = cart_item.quantity + quantity
+            new_quantity = quantity
             if new_quantity > product.inventory_count:
                 raise serializers.ValidationError(
                     f"Total quantity ({new_quantity}) exceeds available stock ({product.inventory_count})"

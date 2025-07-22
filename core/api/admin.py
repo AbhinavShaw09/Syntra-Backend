@@ -10,6 +10,7 @@ from .models import (
     ProductAttributeMapping,
     OrderPaymentRequest,
     PaymentWebhookEvent,
+    CartItem
 )
 # Register your models here.
 
@@ -19,6 +20,7 @@ admin.site.register(Order)
 admin.site.register(BuyerAddress)
 admin.site.register(OrderItem)
 admin.site.register(Product)
+admin.site.register(CartItem)
 admin.site.register(ProductAttribute)
 admin.site.register(ProductAttributeMapping)
 admin.site.register(OrderPaymentRequest)

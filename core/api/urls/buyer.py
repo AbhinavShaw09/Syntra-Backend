@@ -32,7 +32,7 @@ urlpatterns = [
     # Order urls
     path(
         "order/",
-        OrderViewSet.as_view({"post": "create", "get": "retrieve_all_buyer_orders"}),
+        OrderViewSet.as_view({"post": "create", "get": "list"}),
         name="order-create",
     ),
     path(

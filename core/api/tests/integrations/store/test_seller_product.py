@@ -55,7 +55,7 @@ class SellerProductIntegrationTests(BaseAPITestCase):
         )
 
     def test_seller_delete_product(self):
-        response = self.client.delete(
+        response = self.client.post(
             path=f"/api/seller/products/{self.product1.id}/",
             content_type="application/json",
         )

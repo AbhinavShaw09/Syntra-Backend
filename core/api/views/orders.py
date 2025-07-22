@@ -52,8 +52,8 @@ class OrderViewSet(viewsets.ModelViewSet):
             response_serializer = OrderSerializer(updated_order, partial=True)
             return Response(response_serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def retrieve_all_buyer_orders(self, request):
-        orders = OrderService.get_user_orders(request.user)
+    
+    def get_all_seller_orders(self, request):
+        orders = OrderService.get_all_seller_orders()
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
