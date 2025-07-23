@@ -5,7 +5,7 @@ from api.models import Product
 class ProductSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(max_length=255)
-    description = serializers.CharField(required=False, max_length=500)
+    description = serializers.CharField(required=False, max_length=500, default="", allow_blank=True)
     original_price = serializers.DecimalField(max_digits=10, decimal_places=2)
     selling_price = serializers.DecimalField(max_digits=10, decimal_places=2)
     inventory_count = serializers.IntegerField()

@@ -10,7 +10,7 @@ from .models import (
     ProductAttributeMapping,
     OrderPaymentRequest,
     PaymentWebhookEvent,
-    CartItem
+    CartItem,
 )
 # Register your models here.
 
