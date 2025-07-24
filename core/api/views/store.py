@@ -4,11 +4,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
 from api.serializers import (
     ProductSerializer,
+    ProductCategorySerializer,
     CartItemSerializer,
     CartItemUpdateSerializer,
 )
 from api.services import ProductService, CartService
-from api.models import Product
+from api.models import Product, ProductCategory
 
 
 class ProductViewSet(viewsets.ViewSet):
@@ -104,3 +105,38 @@ class CartViewSet(viewsets.ModelViewSet):
     def delete(self, request, pk=None):
         CartService.remove_from_cart(request.user, pk)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class SellerCategoryViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ProductCategorySerializer
+
+    def get_queryset(self):
+        return ProductCategorySerializer.objects.all()
+
+    def list(self, request):
+        product_category_data = self.get_queryset()
+        serializer = self.serializer_class(product_category_data, many=True)
+        return Response(serializer.data)
+
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(
+            serializer.data,
+        )
+
+    def partial_update(self, request, pk=None):
+        product_category = get_object_or_404(ProductCategory, pk=pk)
+        serializer = self.serializer_class(ProductCategory, data=request.data, partial=True)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete_product(self, request, pk=None):
+        product = get_object_or_404(ProductCategory, pk=pk)
+        product.soft_delete()
+        return Response(status=status.HTTP_200_OK)
+
