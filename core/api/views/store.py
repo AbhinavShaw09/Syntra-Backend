@@ -111,7 +111,7 @@ class SellerCategoryViewSet(viewsets.ViewSet):
     serializer_class = ProductCategorySerializer
 
     def get_queryset(self):
-        return ProductCategorySerializer.objects.all()
+        return ProductCategory.objects.all()
 
     def list(self, request):
         product_category_data = self.get_queryset()
@@ -129,14 +129,14 @@ class SellerCategoryViewSet(viewsets.ViewSet):
 
     def partial_update(self, request, pk=None):
         product_category = get_object_or_404(ProductCategory, pk=pk)
-        serializer = self.serializer_class(ProductCategory, data=request.data, partial=True)
+        serializer = self.serializer_class(product_category, data=request.data, partial=True)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         return Response(serializer.data)
 
-    def delete_product(self, request, pk=None):
-        product = get_object_or_404(ProductCategory, pk=pk)
-        product.soft_delete()
+    def delete_category(self, request, pk=None):
+        category = get_object_or_404(ProductCategory, pk=pk)
+        category.soft_delete()
         return Response(status=status.HTTP_200_OK)
 
