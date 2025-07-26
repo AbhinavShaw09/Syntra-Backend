@@ -12,12 +12,33 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       RAZORPAY_CLIENT_ID: ${{ secrets.RAZORPAY_CLIENT_ID }}
       RAZORPAY_CLIENT_SECRET: ${{ secrets.RAZORPAY_CLIENT_SECRET }}
       RAZORPAY_BASE_URL: ${{ secrets.RAZORPAY_BASE_URL }}
-      DJANGO_SETTINGS_MODULE: core.settings 
+      DJANGO_SETTINGS_MODULE: core.settings
+      DB_NAME: test_db
+      DB_USER: test_user
+      DB_PASSWORD: test_password
+      DB_HOST: localhost
+      DB_PORT: 5432
 
     steps:
     - name: Checkout code
@@ -28,12 +49,6 @@ jobs:
       with:
         python-version: '3.12'
 
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-      working-directory: ./core
-
     - name: Cache pip dependencies
       uses: actions/cache@v4
       with:
@@ -41,7 +56,14 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-    - name: Run Django Migrations (Optional, but good practice for tests)
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      working-directory: ./core
+
+    - name: Run Django Migrations
       run: python manage.py migrate --noinput
       working-directory: ./core
 
