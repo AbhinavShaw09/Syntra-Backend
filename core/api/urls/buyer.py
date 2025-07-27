@@ -57,7 +57,7 @@ urlpatterns = [
         CartViewSet.as_view({"get": "list", "post": "create"}),
     ),
     path(
-        "cart/<int:pk>/",
+        "cart/<int:product_id>/",
         CartViewSet.as_view(
             {"patch": "partial_update", "delete": "delete"},
             name="seller_update_or_delete_products",

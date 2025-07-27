@@ -91,8 +91,8 @@ class CartViewSet(viewsets.ModelViewSet):
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def partial_update(self, request, pk=None):
-        cart_item = CartService.get_cart_item(request.user, pk)
+    def partial_update(self, request, product_id=None):
+        cart_item = CartService.get_cart_item(user=request.user, product_id=product_id)
         serializer = CartItemUpdateSerializer(
             cart_item, data=request.data, partial=True, context={"request": request}
         )
@@ -102,8 +102,8 @@ class CartViewSet(viewsets.ModelViewSet):
             return Response(response_serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk=None):
-        CartService.remove_from_cart(request.user, pk)
+    def delete(self, request, product_id=None):
+        CartService.remove_from_cart(user=request.user, product_id=product_id)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 

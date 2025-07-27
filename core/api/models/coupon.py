@@ -4,6 +4,7 @@ from .account import User
 from .store import Product
 from .base import BaseModel
 
+
 class Counpon(BaseModel):
     class CouponType(models.TextChoices):
         PERCENTAGE = "percentage", "Percentage"
@@ -29,6 +30,7 @@ class Counpon(BaseModel):
             user_id=user_id, coupon=self
         ).count()
 
+
 class UserCouponAppliedMapping(BaseModel):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="user_coupons"
@@ -43,7 +45,8 @@ class UserCouponAppliedMapping(BaseModel):
 
     def __str__(self):
         return f"{self.user.username} - {self.coupon.code} ({self.usage_count})"
-    
+
+
 class ProductCouponMapping(BaseModel):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="product_coupons"

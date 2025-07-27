@@ -6,7 +6,7 @@ from api.utils.test_utils import generate_random_phone_number
 class BuyerAddressIntegrationTests(BaseAPITestCase):
     def setUp(self):
         super().setUp()
-        self.client = self.get_auth_client()
+        self.client = self.get_auth_client(user=self.user)
         self.buyer_address.phone_number = generate_random_phone_number()
         self.buyer_address.save()
 

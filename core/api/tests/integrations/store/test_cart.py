@@ -4,7 +4,7 @@ from api.tests.base import BaseAPITestCase
 class CartIntegrationsTest(BaseAPITestCase):
     def setUp(self):
         super().setUp()
-        self.client = self.get_auth_client()
+        self.client = self.get_auth_client(user=self.user)
 
     def test_seller_cart_list_products(self):
         response = self.client.get(

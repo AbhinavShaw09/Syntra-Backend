@@ -92,4 +92,3 @@ class CartItem(BaseModel):
     @property
     def total_price(self):
         return self.product.selling_price * self.quantity
-

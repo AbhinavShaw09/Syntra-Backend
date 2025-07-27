@@ -12,7 +12,7 @@ class BuyerAddressService:
 
     @staticmethod
     def get_buyer_address(user_id=None) -> QuerySet[BuyerAddress]:
-        return get_object_or_404(BuyerAddress, pk=user_id)
+        return BuyerAddress.objects.filter(user_id=user_id).last()
 
 
 class BuyerAccountDetailsService:

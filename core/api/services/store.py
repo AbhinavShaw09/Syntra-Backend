@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.contrib.auth.models import User
 from rest_framework.generics import get_object_or_404
 from django.db.models.query import QuerySet
 from rest_framework import serializers
@@ -31,7 +32,13 @@ class CartService:
         return CartItem.objects.filter(user=user).select_related("product")
 
     @staticmethod
-    def get_cart_item(user, item_id: str) -> CartItem:
+    def get_cart_item(
+        user: User,
+        product_id: tuple[str, None] = None,
+        item_id: tuple[str, None] = None,
+    ) -> CartItem:
+        if product_id:
+            return get_object_or_404(CartItem, product_id=product_id, user=user)
         return get_object_or_404(CartItem, id=item_id, user=user)
 
     @staticmethod
@@ -65,8 +72,7 @@ class CartService:
     @staticmethod
     @transaction.atomic
     def update_cart_item(user, item_id: str, quantity: int) -> CartItem:
-        cart_item = CartService.get_cart_item(user, item_id)
-
+        cart_item = CartService.get_cart_item(user=user, item_id=item_id)
         if quantity > cart_item.product.inventory_count:
             raise serializers.ValidationError(
                 f"Quantity ({quantity}) exceeds available stock ({cart_item.product.inventory_count})"
@@ -77,8 +83,12 @@ class CartService:
         return cart_item
 
     @staticmethod
-    def remove_from_cart(user, item_id: str) -> None:
-        cart_item = CartService.get_cart_item(user, item_id)
+    def remove_from_cart(
+        user, product_id: tuple[str, None] = None, item_id: tuple[str, None] = None
+    ) -> None:
+        cart_item = CartService.get_cart_item(
+            user=user, item_id=item_id, product_id=product_id
+        )
         cart_item.soft_delete()
 
     @staticmethod

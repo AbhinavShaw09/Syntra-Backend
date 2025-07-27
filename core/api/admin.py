@@ -12,7 +12,7 @@ from .models import (
     PaymentWebhookEvent,
     CartItem,
     Counpon,
-    UserCouponAppliedMapping
+    UserCouponAppliedMapping,
 )
 # Register your models here.
 

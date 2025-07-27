@@ -56,4 +56,6 @@ class CartItemUpdateSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         user = self.context["request"].user
         quantity = validated_data["quantity"]
-        return CartService.update_cart_item(user, str(instance.id), quantity)
+        return CartService.update_cart_item(
+            user, item_id=str(instance.id), quantity=quantity
+        )
