@@ -20,7 +20,7 @@ class ProductCategoryMappingTestCase(BaseAPITestCase):
             "category_id": self.category.id
         }
         
-        response = self.auth_client.post("/api/seller/products/", payload)
+        response = self.auth_client.post("/api/seller/products/create/", payload)
         
         self.assertSuccessReponse(response)
         self.assertEqual(response.data["name"], "Test Product")
@@ -46,7 +46,7 @@ class ProductCategoryMappingTestCase(BaseAPITestCase):
             "inventory_count": 10
         }
         
-        response = self.auth_client.post("/api/seller/products/", payload)
+        response = self.auth_client.post("/api/seller/products/create/", payload)
         
         self.assertSuccessReponse(response)
         self.assertEqual(len(response.data["categories"]), 0)
@@ -62,7 +62,7 @@ class ProductCategoryMappingTestCase(BaseAPITestCase):
             "category_id": 99999
         }
         
-        response = self.auth_client.post("/api/seller/products/", payload)
+        response = self.auth_client.post("/api/seller/products/create/", payload)
         
         self.assertErrorResponse(response)
         self.assertIn("category_id", response.data)
