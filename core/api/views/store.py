@@ -35,7 +35,7 @@ class SellerProductViewSet(viewsets.ViewSet):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
-        return Product.objects.all()
+        return Product.objects.prefetch_related("category_mappings__category").all()
 
     def list(self, request):
         product_data = self.get_queryset()

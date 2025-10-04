@@ -64,7 +64,7 @@ class ProductCategory(BaseModel):
         return self.name
 
 
-class ProducCategoryMapping(BaseModel):
+class ProductCategoryMapping(BaseModel):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="category_mappings"
     )
