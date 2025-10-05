@@ -26,23 +26,27 @@ class ProductSerializer(serializers.Serializer):
     def create(self, validated_data):
         category_id = validated_data.pop("category_id", None)
         product = Product.objects.create(**validated_data)
-        
+
         if category_id:
             try:
                 category = ProductCategory.objects.get(id=category_id)
-                ProductCategoryMapping.objects.create(product=product, category=category)
+                ProductCategoryMapping.objects.create(
+                    product=product, category=category
+                )
             except ProductCategory.DoesNotExist:
-                raise serializers.ValidationError({"category_id": "Invalid category ID"})
-        
+                raise serializers.ValidationError(
+                    {"category_id": "Invalid category ID"}
+                )
+
         return product
 
     def update(self, instance, validated_data):
         category_id = validated_data.pop("category_id", None)
-        
+
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
-        
+
         if category_id:
             try:
                 category = ProductCategory.objects.get(id=category_id)
@@ -50,8 +54,10 @@ class ProductSerializer(serializers.Serializer):
                     product=instance, category=category
                 )
             except ProductCategory.DoesNotExist:
-                raise serializers.ValidationError({"category_id": "Invalid category ID"})
-        
+                raise serializers.ValidationError(
+                    {"category_id": "Invalid category ID"}
+                )
+
         return instance
 
     def to_representation(self, instance):

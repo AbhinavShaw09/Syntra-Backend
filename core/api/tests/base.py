@@ -59,8 +59,9 @@ class BaseAPITestCase(APITestCase):
             status.HTTP_204_NO_CONTENT,
         ]
 
+        response_data = getattr(response, "data", response.content)
         assert response.status_code in allowed_statuses, (
-            f"Expected success response, got {response.status_code}:\n{response.data}"
+            f"Expected success response, got {response.status_code}:\n{response_data}"
         )
 
     def assertErrorResponse(self, response):
@@ -71,8 +72,9 @@ class BaseAPITestCase(APITestCase):
             status.HTTP_404_NOT_FOUND,
         ]
 
+        response_data = getattr(response, "data", response.content)
         assert response.status_code in allowed_statuses, (
-            f"Expected error response, got {response.status_code}:\n{response.data}"
+            f"Expected error response, got {response.status_code}:\n{response_data}"
         )
 
     def assertNoDataInReponse(self, response):

@@ -13,7 +13,7 @@ class BuyerOrderIntegrationTests(BaseAPITestCase):
     def create_order(self) -> Response:
         return self.client.post(
             path=f"/api/buyer/order/", content_type="application/json"
-        )
+        ) # pyright: ignore[reportReturnType]
 
     @httpretty.activate
     def test_get_buyer_orders(self):
@@ -53,16 +53,14 @@ class BuyerOrderIntegrationTests(BaseAPITestCase):
 
         order_id = response.data[0]["id"]
 
-        response = self.client.post(
-            path=f"/api/seller/order/{order_id}/",
+        response = self.client.put(
+            path=f"/api/seller/orders/{order_id}/",
             data={"status": 1},
             content_type="application/json",
         )
 
         self.assertSuccessReponse(response)
-        self.assertEqual(
-            int(response.data["status"]), Order.StatusChoices.COMPLETED.value
-        )
+        self.assertEqual(response.data["status"], "Completed")
 
     @httpretty.activate
     def test_list_all_buyer_orders(self):

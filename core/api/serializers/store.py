@@ -22,10 +22,13 @@ class OrderSerializer(serializers.Serializer):
     total_amount = serializers.DecimalField(
         max_digits=10, decimal_places=2, read_only=True
     )
-    status = serializers.CharField(read_only=True)
+    status = serializers.SerializerMethodField(read_only=True)
     items = OrderItemSerializer(many=True, read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
+
+    def get_status(self, obj):
+        return obj.get_status_display()
 
 
 class OrderCreateSerializer(serializers.Serializer):

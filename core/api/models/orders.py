@@ -8,11 +8,11 @@ from .buyer import BuyerAddress
 
 class Order(BaseModel):
     class StatusChoices(models.IntegerChoices):
-        PROCESSING = (0,)
-        COMPLETED = (1,)
-        SHIPPED = (2,)
-        DELIVERED = (3,)
-        CANCELLED = (4,)
+        PROCESSING = 0, "Processing"
+        COMPLETED = 1, "Completed"
+        SHIPPED = 2, "Shipped"
+        DELIVERED = 3, "Delivered"
+        CANCELLED = 4, "Cancelled"
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)

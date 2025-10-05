@@ -24,7 +24,10 @@ class OrderService:
 
     @staticmethod
     def get_order_by_id(user_id, order_id: str) -> Order:
-        return Order.objects.filter(id=order_id, user_id=user_id).first()
+        try:
+            return Order.objects.get(id=order_id, user_id=user_id)
+        except Order.DoesNotExist:
+            raise serializers.ValidationError("Order not found")
 
     @staticmethod
     @transaction.atomic
@@ -93,7 +96,7 @@ class OrderService:
 
     @staticmethod
     def update_order_status(user, order_id: str, status: str) -> Order:
-        order = OrderService.get_order_by_id(user, order_id)
+        order = OrderService.get_order_by_id(user.id, order_id)
         order.status = status
         order.save()
         return order
