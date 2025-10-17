@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: shopless_db
+      POSTGRES_USER: shopless_user
+      POSTGRES_PASSWORD: shopless_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: ./core
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./core:/app
+    environment:
+      - DEBUG=True
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=shopless_db
+      - DB_USER=shopless_user
+      - DB_PASSWORD=shopless_pass
+      - DB_HOST=db
+      - DB_PORT=5432
+    depends_on:
+      - db
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+
+volumes:
+  postgres_data:

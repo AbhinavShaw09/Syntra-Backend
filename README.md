@@ -45,11 +45,10 @@ shopless/
 
 ### Prerequisites
 
-- Python 3.10+
-- pip (Python package installer)
-- Virtual environment tool
+- Docker and Docker Compose
+- Git
 
-### Quick Start
+### Quick Start with Docker (Recommended)
 
 1. **Clone the repository**
    ```bash
@@ -57,35 +56,43 @@ shopless/
    cd shopless
    ```
 
-2. **Set up virtual environment**
+2. **Start the application**
+   ```bash
+   ./run start
+   ```
+
+The API will be available at `http://localhost:8000`
+
+### Docker Commands
+
+```bash
+./run start    # Start the application
+./run stop     # Stop the application
+./run restart  # Restart the application
+./run logs     # View application logs
+./run build    # Build the application
+./run clean    # Clean up containers and volumes
+```
+
+### Manual Setup (Alternative)
+
+If you prefer to run without Docker:
+
+1. **Prerequisites**
+   - Python 3.10+
+   - PostgreSQL
+   - pip and virtual environment tool
+
+2. **Setup**
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install dependencies**
-   ```bash
    cd core
    pip install -r requirements.txt
-   ```
-
-4. **Configure environment**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
-
-5. **Run migrations**
-   ```bash
+   cp .env.example .env  # Configure your database settings
    python manage.py migrate
-   ```
-
-6. **Start development server**
-   ```bash
    python manage.py runserver
    ```
-
-The API will be available at `http://127.0.0.1:8000/`
 
 ## API Documentation
 
@@ -116,6 +123,18 @@ python manage.py test
 The project supports multiple database backends. Configure your preferred database in the `.env` file.
 
 ## Deployment
+
+### Docker Deployment
+
+The application includes Docker configuration for easy deployment:
+
+- **docker-compose.yml**: Orchestrates the web application and PostgreSQL database
+- **Dockerfile**: Containerizes the Django application
+- **./run script**: Provides convenient commands for container management
+
+For production deployment, update the environment variables in docker-compose.yml and ensure proper security configurations.
+
+### Manual Deployment
 
 The application is designed to be easily deployable to various platforms. Refer to the core directory's README for detailed deployment instructions.
 
