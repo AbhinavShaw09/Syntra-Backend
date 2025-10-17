@@ -22,38 +22,49 @@ class OrderViewSet(viewsets.ModelViewSet):
             return OrderStatusUpdateSerializer
         return OrderSerializer
 
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(*args, **kwargs)
+        return serializer
+
+    def get_response_serializer(self, *args, **kwargs):
+        serializer = OrderSerializer(*args, **kwargs)
+        return serializer
+
     def list(self, request):
         orders = self.get_queryset()
-        serializer = OrderSerializer(orders, many=True)
+        serializer = self.get_serializer(orders, many=True)
         return Response(serializer.data)
 
     def create(self, request):
-        serializer = OrderCreateSerializer(
+        serializer = self.get_serializer(
             data=request.data, context={"request": request}
         )
         if serializer.is_valid():
             order = serializer.save()
-            response_serializer = OrderSerializer(order)
+            response_serializer = self.get_response_serializer(order)
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def retrieve(self, request, pk=None):
         order = OrderService.get_order_by_id(user_id=request.user.id, order_id=pk)
-        serializer = OrderSerializer(order)
+        serializer = self.get_serializer(order)
         return Response(serializer.data)
 
     def update(self, request, pk=None):
         order = OrderService.get_order_by_id(user_id=request.user.id, order_id=pk)
-        serializer = OrderStatusUpdateSerializer(
+        serializer = self.get_serializer(
             order, data=request.data, context={"request": request}
         )
         if serializer.is_valid():
             updated_order = serializer.save()
-            response_serializer = OrderSerializer(updated_order, partial=True)
+            response_serializer = self.get_response_serializer(
+                updated_order, partial=True
+            )
             return Response(response_serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_all_seller_orders(self, request):
         orders = OrderService.get_all_seller_orders()
-        serializer = OrderSerializer(orders, many=True)
+        serializer = self.get_serializer(orders, many=True)
         return Response(serializer.data)

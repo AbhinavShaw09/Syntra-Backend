@@ -13,7 +13,7 @@ class BuyerOrderIntegrationTests(BaseAPITestCase):
     def create_order(self) -> Response:
         return self.client.post(
             path=f"/api/buyer/order/", content_type="application/json"
-        ) # pyright: ignore[reportReturnType]
+        )  # pyright: ignore[reportReturnType]
 
     @httpretty.activate
     def test_get_buyer_orders(self):

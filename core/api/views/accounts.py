@@ -1,6 +1,8 @@
+from typing import Union
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework.serializers import Serializer
 
 from api.services.jwt import JwtService
 from api.serializers import RegisterSerializer, LoginSerializer
@@ -10,8 +12,19 @@ class AuthViewSet(viewsets.ViewSet):
     authentication_classes = []
     permission_classes = [AllowAny]
 
+    def get_serializer_class(self) -> Serializer:
+        if self.action == "register":
+            return RegisterSerializer
+        else:
+            return LoginSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(*args, **kwargs)
+        return serializer
+
     def register(self, request):
-        serializer = RegisterSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             if not user:
@@ -26,7 +39,7 @@ class AuthViewSet(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def login(self, request):
-        serializer = LoginSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data
             if not user:

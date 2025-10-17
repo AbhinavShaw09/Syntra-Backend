@@ -55,16 +55,27 @@ class BuyerAddressViewsSet(viewsets.ViewSet):
 class BuyerAccountDetailsViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
+    def get_serializer_class(self):
+        return BuyerAccountDetailsSerializer
+
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        serializer = serializer_class(*args, **kwargs)
+        return serializer
+
+    def _get_all_buyer_details(self, user_id: int) -> User:
+        return BuyerAccountDetailsService.get_all_buyer_details(user_id=user_id)
+
     def retrieve(self, request):
         user_id = request.auth.get("user_id")
-        user = BuyerAccountDetailsService.get_all_buyer_details(user_id=user_id)
-        serializer = BuyerAccountDetailsSerializer(user)
+        user = self._get_all_buyer_details(user_id=user_id)
+        serializer = self.get_serializer(user)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def partial_update(self, request):
         user_id = request.auth.get("user_id")
-        user = BuyerAccountDetailsService.get_all_buyer_details(user_id=user_id)
-        serializer = BuyerAccountDetailsSerializer(
+        user = self._get_all_buyer_details(user_id=user_id)
+        serializer = self.get_serializer(
             user, data=request.data, partial=True, context={"request": request}
         )
         if not serializer.is_valid():
