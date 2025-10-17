@@ -53,7 +53,7 @@ shopless/
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/AbhinavShaw09/Syntra-Backend.git
    cd shopless
    ```
 
