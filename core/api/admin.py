@@ -11,7 +11,8 @@ from .models import (
     OrderPaymentRequest,
     PaymentWebhookEvent,
     CartItem,
-    Counpon,
+    CartItem,
+    Coupon,
     UserCouponAppliedMapping,
 )
 # Register your models here.
@@ -20,7 +21,7 @@ admin.site.register(Seller)
 admin.site.register(Buyer)
 admin.site.register(Order)
 admin.site.register(Product)
-admin.site.register(Counpon)
+admin.site.register(Coupon)
 admin.site.register(CartItem)
 admin.site.register(OrderItem)
 admin.site.register(BuyerAddress)

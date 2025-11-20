@@ -1,5 +1,5 @@
 from django.urls import path
-from api.views import SellerProductViewSet, SellerCategoryViewSet
+from api.views import SellerProductViewSet, SellerCategoryViewSet, DashboardViewSet
 
 
 urlpatterns = [
@@ -30,5 +30,10 @@ urlpatterns = [
             {"patch": "partial_update", "post": "delete_category"},
             name="seller_update_or_delete_category",
         ),
+    ),
+    path(
+        "dashboard/",
+        DashboardViewSet.as_view({"get": "stats"}),
+        name="seller_dashboard_stats",
     ),
 ]

@@ -5,7 +5,7 @@ from .store import Product
 from .base import BaseModel
 
 
-class Counpon(BaseModel):
+class Coupon(BaseModel):
     class CouponType(models.TextChoices):
         PERCENTAGE = "percentage", "Percentage"
         FIXED_AMOUNT = "fixed_amount", "Fixed Amount"
@@ -36,7 +36,7 @@ class UserCouponAppliedMapping(BaseModel):
         User, on_delete=models.CASCADE, related_name="user_coupons"
     )
     coupon = models.ForeignKey(
-        Counpon, on_delete=models.CASCADE, related_name="coupon_users"
+        Coupon, on_delete=models.CASCADE, related_name="coupon_users"
     )
     usage_count = models.PositiveIntegerField(default=0)
 
@@ -52,7 +52,7 @@ class ProductCouponMapping(BaseModel):
         Product, on_delete=models.CASCADE, related_name="product_coupons"
     )
     coupon = models.ForeignKey(
-        Counpon, on_delete=models.CASCADE, related_name="coupon_products"
+        Coupon, on_delete=models.CASCADE, related_name="coupon_products"
     )
 
     class Meta:
